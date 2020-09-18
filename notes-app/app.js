@@ -48,7 +48,7 @@ yargs.command({
     command: 'read',
     describe: "read a note",
     handler() {
-        notes.listNotes();
+        console.log('this is for reading notes')
     }
 });
 
@@ -56,8 +56,7 @@ yargs.command({
     command: 'list',
     describe: "list your notes",
     handler()  {
-        console.log('listing the notes');
-        // fs.appendFileSync("notes.txt","   this is a new note")
+        notes.listNotes();
     }
 });
 

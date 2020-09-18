@@ -8,9 +8,10 @@ const getNotes = () =>  "Your Notes...";
 const addNote = (title, body) => {
     const notes = loadNotes();
 
-    const dupicateNotes = notes.filter(note => note.title === title );
+    // const dupicateNotes = notes.filter(note => note.title === title );
+    const dupicateNote = notes.find(note => note.title === title );
 
-    if (dupicateNotes.length === 0){
+    if (!dupicateNote){
         notes.push({
             title: title,
             body: body
@@ -49,6 +50,15 @@ const listNotes = () => {
     
 }
 
+const readNote = (title) => {
+    const notes = loadNotes();
+    notes.find(note => {
+        if(note.title === title){
+            console.log("title: " + chalk.blue.inverse(note.title)+ " " + "body: " + note.body);
+        }
+    })
+}
+
 const saveNotes = (notes) => {
     const dataJSON = JSON.stringify(notes);
     fs.writeFileSync('notes.json', dataJSON);
@@ -70,5 +80,6 @@ module.exports = {
     getNotes: getNotes,
     addNote: addNote,
     removeNote : removeNote,
-    listNotes: listNotes
+    listNotes: listNotes,
+    readNote: readNote
 }

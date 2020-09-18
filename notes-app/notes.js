@@ -20,9 +20,9 @@ const addNote = (title, body) => {
         })
         
         saveNotes(notes);
-        console.log('new note added');
+        console.log(chalk.green.inverse('new note added'));
     } else {
-        console.log('duplicate note');
+        console.log(chalk.red.inverse('duplicate note'));
     }
  
 }

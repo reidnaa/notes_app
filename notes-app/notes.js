@@ -1,17 +1,14 @@
 const fs = require('fs');
 const chalk = require('chalk');
 
-const getNotes = () => {
-    return "Your Notes...";
-}
+const getNotes = () =>  "Your Notes...";
 
 
+// add note 
 const addNote = (title, body) => {
     const notes = loadNotes();
 
-    const dupicateNotes = notes.filter(note => {
-        return note.title === title;
-    } )
+    const dupicateNotes = notes.filter(note => note.title === title );
 
     if (dupicateNotes.length === 0){
         notes.push({
@@ -29,12 +26,8 @@ const addNote = (title, body) => {
 
 const removeNote = title => {
     const notes = loadNotes();
-    const newNotes = notes.filter(note => {
+    const newNotes = notes.filter(note => note.title !== title);
 
-      
-            return note.title !== title;
-        
-    });
     if (notes.length > newNotes.length){
         console.log(chalk.bgGreen('Note Removed'));
         saveNotes(newNotes);
@@ -46,8 +39,6 @@ const removeNote = title => {
     
     
 }
-
-
 
 const saveNotes = (notes) => {
     const dataJSON = JSON.stringify(notes);

@@ -9,14 +9,15 @@ const addNote = (title, body) => {
     const notes = loadNotes();
 
     // const dupicateNotes = notes.filter(note => note.title === title );
-    const dupicateNote = notes.find(note => note.title === title );
+    const duplicateNote = notes.find(note => note.title === title );
 
-    if (!dupicateNote){
+    
+    if (!duplicateNote){
         notes.push({
             title: title,
             body: body
         })
-        
+        debugger
         saveNotes(notes);
         console.log(chalk.green.inverse('new note added'));
     } else {

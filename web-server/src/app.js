@@ -47,6 +47,22 @@ app.get('/weather', (req, res) => {
     })
 });
 
+app.get('/help/*' , (req, res) => {
+    res.render('404', {
+        title : 'Help Article not found',
+        name:  "Reid",
+        errorMessage: "The page you are looking for does not exist"
+    })
+})
+
+app.get('*', (req, res) => {
+    res.render('404',{
+        title: "404 no page for that",
+        name: 'Reid',
+        errorMessage: "The page you are looking for does not exist"
+
+    })
+});
 app.listen(3000, () => {
     console.log("server started on port 3000");
 })

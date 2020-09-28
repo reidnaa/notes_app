@@ -1,33 +1,50 @@
-header{
-    color:blue;
-    padding:20px;
-    background-color: yellow;
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    width:650px;
+    margin:auto;
     display:flex;
-    justify-content: space-between;
+    flex-direction:column;
+    min-height:100vh
+}
+
+header{
+    padding:  20px 0 20px;
+    margin-bottom: 60px;
+}
+
+.content{
+    flex-grow:1;
+}
+
+h1{
+    font-size:60px;
 }
 
 nav{
-    display:flex;
-    justify-content: space-around;
-    width:26%;
+    display:flex;    
     font-size: 20px;
     font-weight: bold;
-    
+    align-items: flex-start;
+    margin-right: 40px;
 }
 nav a{
     text-decoration: none;
     color: black;
-    font-family: Arial, Helvetica, sans-serif;
+    margin:10px;
 }
 
 nav a:hover{
     color: darkgrey;
 }
-img{
+.about-img{
     width:250px;
 }
 
-footer{
-    padding:40px;
-    background-color: lightblue;
+footer {
+    padding-top: 20px;
+    border-top: 3px solid #ccc;
+    margin-top: 40px;
+}
+footer p {
+    margin:10px;
 }

@@ -1,6 +1,9 @@
 const path = require('path');
 const express = require('express');
 const hbs = require('hbs');
+const { count } = require('console');
+const geocode = require('./utils/geocode');
+const forecast = require('./utils/forecast');
 
 const app = express();
 
@@ -40,11 +43,43 @@ app.get('/help', (req, res)=> {
 })
 
 app.get('/weather', (req, res) => {
-    res.send({
-        'name': 'reid',
-        'age': '35',
-        'worth': 'nothing'
-    })
+
+    if (!req.query.address){
+        res.send({
+            error: 'please provide an address'
+        })
+        
+    } else {
+
+        const location = req.query.address
+        geocode(location, (error, {long, lat} = {}) => {
+            if(error) { 
+                return res.send({error});
+            }
+
+            forecast(long,lat, (error, data) => {
+                if(error){
+                   return  res.send({ error })
+                }
+
+                res.send({
+                    location,
+                    forecast:  data
+                })
+            })
+        })
+    }
+});
+
+app.get('/products', (req, res) => {
+    !req.query.search ? res.send({
+        error: 'please provide a search term'
+    }) : res.send({
+        'products':[]
+    }) ;
+
+   
+    
 });
 
 app.get('/help/*' , (req, res) => {

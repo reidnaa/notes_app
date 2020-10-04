@@ -70,58 +70,26 @@ MongoClient.connect(connectionURL, { useNewUrlParser : true ,useUnifiedTopology:
     // })
 
 
-    // db.collection('users').updateOne({
-    //     _id : new ObjectID('5f736e8cf6e26d0a6f0c89e5')
-    // },{
-    //     $inc:{
-    //         age: 1
-    //     }
-    // }).then((result) => {
-    //     console.log("done");
-    // }).catch( (error) => {
-    //     console.log(error);
-    // });
-
 
     // db.collection('tasks').updateMany({
     //     completed: false
     // },{
     //     $set: {
-    //         completed: true
+    //         completed:true
     //     }
-    // }).then(() => {
-    //     console.log("all tasks are now completed, go check")
+    // }).then((result) => {
+    //     console.log("done");
     // }).catch((error) => {
-    //     console.log('uh oh', error);
+    //     console.log("error");
     // })
 
-    // db.collection('users').deleteOne({
-    //     name : 'ginny'
+    // db.collection('tasks').deleteMany({
+    //     completed: true
     // }).then((result) => {
-    //     console.log('go check if user:ginny was deleted');
+    //     console.log("completed tasks are gone");
     // }).catch((error) => {
-    //     console.log('error man');
-    // });
-
-    db.collection('tasks').updateMany({
-        completed: false
-    },{
-        $set: {
-            completed:true
-        }
-    }).then((result) => {
-        console.log("done");
-    }).catch((error) => {
-        console.log("error");
-    })
-
-    db.collection('tasks').deleteMany({
-        completed: true
-    }).then((result) => {
-        console.log("completed tasks are gone");
-    }).catch((error) => {
-        console.log('something went wrong');
-    })
+    //     console.log('something went wrong');
+    // })
 
     
 

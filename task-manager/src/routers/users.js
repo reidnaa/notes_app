@@ -1,7 +1,8 @@
 const express = require("express");
 const router = new express.Router();
 const User = require("../models/user");
-const auth =require('../middleware/auth')
+const auth =require('../middleware/auth');
+const Task = require("../models/task");
 
 
 router.post("/users", async (req, res) => {
@@ -78,16 +79,17 @@ router.patch("/users/me", auth, async (req, res) => {
     }
 });
 
-router.delete('/users/me', async (req, res) => {
+router.delete('/users/me', auth, async (req, res) => {
     const _id = req.user._id;
 
     try{
-        const user = await User.findByIdAndDelete(_id);
-
+        const tasks = await Task.deleteMany({owner: _id})
+        const user = await User.deleteOne({_id});
+        
         if(!user){
             return res.status(400).send();
         }
-        res.send(user);
+        res.send("User Deleted");
     }catch(e){
         res.status(500).send();
     }

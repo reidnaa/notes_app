@@ -3,8 +3,11 @@ const router = new express.Router();
 const User = require("../models/user");
 const auth =require('../middleware/auth');
 const Task = require("../models/task");
+const multer = require('multer');
+const sharp = require('sharp');
 
 
+// Route to register a new user
 router.post("/users", async (req, res) => {
     const user = new User(req.body);
     try {
@@ -16,6 +19,7 @@ router.post("/users", async (req, res) => {
     }
 });
 
+// route for logging in a user
 router.post('/users/login', async (req, res) => {
     try{
         const user = await User.findByCredentials(req.body.email, req.body.password)
@@ -26,6 +30,7 @@ router.post('/users/login', async (req, res) => {
     }
 });
 
+// route for logging out user
 router.post('/users/logout', auth, async (req,res) => {
     try{
         req.user.tokens = req.user.tokens.filter(token => {
@@ -38,6 +43,7 @@ router.post('/users/logout', auth, async (req,res) => {
     }
 })
 
+// route for logging out user from all devices
 router.post('/users/logoutall', auth, async(req,res) => {
     
     try{
@@ -49,10 +55,12 @@ router.post('/users/logoutall', auth, async(req,res) => {
     }
 })
 
+// route to get users profile - have to be authenticated
 router.get("/users/me", auth , async (req, res) => {
     res.send(req.user)
 });
 
+// route for updating users info
 router.patch("/users/me", auth, async (req, res) => {
     const _id = req.user._id;
     const updates = Object.keys(req.body);
@@ -79,6 +87,8 @@ router.patch("/users/me", auth, async (req, res) => {
     }
 });
 
+
+// route for deleting a user
 router.delete('/users/me', auth, async (req, res) => {
     const _id = req.user._id;
 
@@ -96,5 +106,59 @@ router.delete('/users/me', auth, async (req, res) => {
 })
 
 
+const upload = multer({
+    limits: {
+        fileSize: 1000000
+    },
+    fileFilter(req, file, cb){
+        if( !file.originalname.match(/\.(jpg|png|jpeg)$/)){
+            return cb(new Error('not a jpg, jpeg or png'))
+        }
+        cb(undefined, true)
+    }
+})
 
+
+// route for uploading an avatar - uses multer and sharp
+router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res) => {
+    const buffer = await sharp(req.file.buffer).resize({
+        width:250,
+        height:250
+    }).png().toBuffer()
+    
+    
+    
+    req.user.avatar = buffer;
+    await req.user.save();
+    res.send();
+}, (error, req, res, next) => {
+    res.status(400).send({error: error.message});
+})
+
+
+// route for deleting avatar
+router.delete('/users/me/avatar', auth , async (req,res) => {
+
+        req.user.avatar = undefined;
+        
+        await req.user.save();
+        res.send("deleted avatar");
+});
+
+
+// route for getting user  avatar
+router.get('/users/:id/avatar', async (req, res) => {
+    try{
+        const user = await User.findById(req.params.id)
+
+        if(!user){
+            throw new Error("no");
+        }
+
+        res.set('Content-Type', 'image/png');
+        res.send(user.avatar);
+    }catch(e){
+        res.status(404).send("what");
+    }
+})
 module.exports = router;
